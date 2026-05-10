@@ -68,18 +68,12 @@ app.post(
       }
 
       try {
-        // Parser les métadonnées
-        let metadata = {}
-        try {
-          metadata = session.metadata?.data
-            ? JSON.parse(session.metadata.data)
-            : session.metadata || {}
-        } catch(e) {
-          metadata = session.metadata || {}
-        }
-
-        const type     = metadata.type     || session.metadata?.type     || ""
-
+        // Lire les champs depuis metadata (Stripe stocke en strings plates)
+        const meta     = session.metadata || {}
+        const type     = meta.type     || "billing"
+        const ownerUid = meta.ownerUid || ""
+        const plan     = meta.plan     || "pro"
+        const email    = session.customer_email || meta.email || ""
 
         console.log(`🔍 WEBHOOK BILLING:`)
         console.log(`   session.id:     ${session.id}`)
