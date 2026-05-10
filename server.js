@@ -79,17 +79,15 @@ app.post(
         }
 
         const type     = metadata.type     || session.metadata?.type     || ""
-        const ownerUid = metadata.ownerUid || session.metadata?.ownerUid || ""
-        const plan     = metadata.plan     || session.metadata?.plan     || "pro"
-        const email    = session.customer_email || metadata.email || ""
 
-        console.log(`🔍 type=${type} | plan=${plan} | ownerUid=${ownerUid} | email=${email}`)
 
-        // ── Traiter uniquement les paiements d'abonnement SaaS ──
-        if (type !== "billing") {
-          console.log("ℹ️ Type non billing — ignoré")
-          return res.json({ received: true })
-        }
+        console.log(`🔍 WEBHOOK BILLING:`)
+        console.log(`   session.id:     ${session.id}`)
+        console.log(`   type:           ${type}`)
+        console.log(`   plan:           ${plan}`)
+        console.log(`   ownerUid:       ${ownerUid}`)
+        console.log(`   email:          ${email}`)
+        console.log(`   metadata brut:  ${JSON.stringify(session.metadata)}`)
 
         if (!ownerUid && !email) {
           console.error("❌ Pas d'ownerUid ni email dans metadata")
